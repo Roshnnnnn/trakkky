@@ -20,14 +20,25 @@ export default function FormSection({ formData, setFormData }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Basic validation
+    if (
+      !formData.spaName ||
+      !formData.city ||
+      !formData.area ||
+      !formData.price ||
+      !formData.openTime
+    ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     const formDataToSend = new FormData();
     formDataToSend.append("spa_name", formData.spaName);
     formDataToSend.append("city", formData.city);
     formDataToSend.append("area", formData.area);
     formDataToSend.append("price", formData.price);
-    formDataToSend.append("timing", formData.openTime); // Using openTime as timing
+    formDataToSend.append("timing", formData.openTime);
 
-    // Append each image file
     if (formData.images) {
       Array.from(formData.images).forEach((image) => {
         formDataToSend.append("images", image);
@@ -46,6 +57,7 @@ export default function FormSection({ formData, setFormData }) {
       );
 
       console.log("Success:", response.data);
+      alert("Form submitted successfully!");
 
       // Reset form after successful submission
       setFormData({
@@ -59,6 +71,7 @@ export default function FormSection({ formData, setFormData }) {
       });
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
+      alert("An error occurred while submitting the form. Please try again.");
     }
   };
 
